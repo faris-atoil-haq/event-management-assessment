@@ -1,2 +1,5 @@
 .mindo-assess
 .env
+*.pyc
+__pycache__
+/.vscode/
