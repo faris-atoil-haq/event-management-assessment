@@ -2,17 +2,21 @@
 
 {% load compress %}
 {% load static %}
+{% load hosts %}
 
-<html lang="en" class="light">
+<html lang="en" class="">
 
 {% include "head.html" %}
+{% if not request.user.is_authenticated %}
+    {% include "main/templates/component/navbar.html" %}
+{% endif %}
 
 <body class="bg-white dark:bg-gray-900">
     <div class="container mx-auto mt-4">
         {% block content %}
         {% endblock content %}
     </div>
-    <script src="{% static 'dist/flowbite.js' %}"></script>
+    <script src="{% static 'dist/flowbite.min.js' %}"></script>
 </body>
 
 </html>

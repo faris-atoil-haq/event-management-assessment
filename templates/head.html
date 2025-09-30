@@ -1,19 +1,21 @@
 {% load compress %}
 {% load static %}
+{% load hosts %}
+
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management</title>
-
-    {% compress css %}
-        <link href="{% static 'dist/flowbite.min.css' %}" rel="stylesheet" />
+    <title>Event Management System</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'assets/logo.png' %}">
+    <link href="{% static 'dist/flowbite.min.css' %}" rel="stylesheet" />
+    {% if DEBUG %}
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'src/output.css' %}">
+        {% endcompress %}
+    {% else %}
         <link rel="stylesheet" href="{% static 'src/output.css' %}">
-    {% endcompress %}
-    
-    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
-    <script> 
-        {% include 'js/tailwind.js' %}
-    </script>
+    {% endif %}
+
 </head>
