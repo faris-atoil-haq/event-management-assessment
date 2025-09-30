@@ -3,26 +3,16 @@
 {% load compress %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django + Tailwind CSS + Flowbite</title>
+{% include "head.html" %}
 
-    {% compress css %}
-    <link rel="stylesheet" href="{% static 'src/output.css' %}">
-    {% endcompress %}
-
-</head>
-
-<body class="bg-green-50">
+<body class="bg-white dark:bg-gray-900">
     <div class="container mx-auto mt-4">
         {% block content %}
         {% endblock content %}
     </div>
+    <script src="{% static 'dist/flowbite.js' %}"></script>
 </body>
 
 </html>

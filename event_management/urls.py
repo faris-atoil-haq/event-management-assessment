@@ -17,10 +17,12 @@ Including another URLconf
 
 from django.shortcuts import render
 from django.contrib import admin
-from .views import index
+from .views import index, login, event_input
 from django.urls import path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', index, name='index')
+    path('', index, name='index'),
+    path('login/', login, name='login'),
+    path('event_input/', event_input, name='event_input')
 ]

@@ -1,11 +1,30 @@
 {
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
     "@tailwindcss/postcss": "^4.1.13",
     "flowbite": "^3.1.2",
-    "postcss": "^8.5.6"
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.13",
-    "tailwindcss": "^4.1.13"
-  }
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6"
+  },
+  "name": "event-management-assessment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faris-atoil-haq/event-management-assessment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/faris-atoil-haq/event-management-assessment/issues"
+  },
+  "homepage": "https://github.com/faris-atoil-haq/event-management-assessment#readme"
 }
