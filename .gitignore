@@ -18,7 +18,6 @@ build/
 .pytest_cache/
 
 # Django
-db.sqlite3
 media/
 
 # Node.js (for Tailwind)
