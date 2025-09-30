@@ -8,6 +8,8 @@ def index(request, public=True):
 def login(request):
     return render(request, 'login_page.html')
 
-
 def event_input(request):
     return render(request, 'event_input.html')
+
+def signup(request):
+    return render(request, 'signup.html')
