@@ -29,9 +29,10 @@ SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
+PROD = env.bool('PROD', default=False)
+STAGING = env.bool('STAGING', default=False)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 # Application definition
 
@@ -45,22 +46,37 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     'app',
-    
+    'django_hosts',
     # For Styling
     'compressor',
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django_hosts.middleware.HostsRequestMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_hosts.middleware.HostsResponseMiddleware",
+]
+
+# login by EMAIL not username
+AUTHENTICATION_BACKENDS = [
+    'event_management.backends.ExtendedUserModelBackend',
 ]
 
 ROOT_URLCONF = "event_management.urls"
+ROOT_HOSTCONF = "event_management.hosts"
+DEFAULT_HOST = "main"
+
+PARENT_HOST = env("PARENT_HOST")
+MAIN_APP_HOST = env("MAIN_APP_HOST", default="")
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/login/"
 
 TEMPLATES = [
     {
@@ -72,6 +88,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "app.custom_context_processors.custom_context",
             ],
         },
     },
@@ -130,7 +147,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+if DEBUG:
+    # Development: Use local static files
+    STATIC_URL = "/static/"
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
+else:
+    # Production/Non-DEBUG: Use external CDN or static server
+    STATIC_URL = env('STATIC_URL_EXTERNAL',
+                     default='https://faris-atoil-haq.github.io/static/')
+    # Alternative: Use a local static server
+    # STATIC_URL = env('STATIC_URL_EXTERNAL', default='http://static.yourdomain.com/static/')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

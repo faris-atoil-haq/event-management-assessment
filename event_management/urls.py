@@ -1,28 +1,17 @@
-"""
-URL configuration for event_management project.
+'''event_management/urls.py'''
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-
-from django.shortcuts import render
 from django.contrib import admin
-from .views import index, login, event_input
+from .views import index
 from django.urls import path
 
+        
+# Main URL patterns
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', index, name='index'),
-    path('login/', login, name='login'),
-    path('event_input/', event_input, name='event_input')
 ]
+
+# Error handlers
+handler400 = 'event_management.views.handle_400'
+handler404 = 'event_management.views.handle_404'
+handler500 = 'event_management.views.handle_500'

@@ -1,9 +1,9 @@
-<!-- templates/index.html -->
+<!-- main/templates/index.html -->
 
 {% extends "_base.html" %}
 
 {% block content %}
     {% if public %}
-        {% include "public_page.html" %}
+        {% include "main/templates/main_dashboard.html" %}
     {% endif %}
 {% endblock content %}

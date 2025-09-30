@@ -1,10 +1,26 @@
 .mindo-assess
 .env
 *.pyc
-__pycache__
+__pycache__/
+*.pyo
+*.pyd
+.Python
+event_management/__pycache__
 /.vscode/
 static/CACHE
 static/CACHE/*
-static/src/output.css
-staticfiles/
-static/
+static/src/input.css
+
+# Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Django
+db.sqlite3
+media/
+
+# Node.js (for Tailwind)
+node_modules/
+package-lock.json
