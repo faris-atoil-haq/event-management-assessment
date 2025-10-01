@@ -33,6 +33,20 @@ PROD = env.bool('PROD', default=False)
 STAGING = env.bool('STAGING', default=False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+IS_VERCEL = os.environ.get('VERCEL', False)
+# ALLOWED_HOSTS configuration
+if IS_VERCEL:
+    # For Vercel: Allow all Vercel domains
+    ALLOWED_HOSTS = [
+        '.vercel.app',
+        '.now.sh',
+        'localhost',
+        '127.0.0.1',
+    ]
+    # Add specific Vercel URLs from environment
+    vercel_url = os.environ.get('VERCEL_URL')
+    if vercel_url:
+        ALLOWED_HOSTS.append(vercel_url)
 
 # Application definition
 
