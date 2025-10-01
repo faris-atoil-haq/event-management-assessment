@@ -22,7 +22,11 @@
                 <a href="{% url 'login'  %}"class="text-blue-700 hover:underline">Login here</a>
             </div>
         {% else %}
-            The email has been sent to your email address. Please check your email.
+            {% comment %} The email has been sent to your email address. Please check your email. {% endcomment %}
+             Account has been created. Please confirm your account below.
+            <div class="text-sm font-medium text-gray-500">
+                <a href="{% url 'confirm'  %}?code={{verification_code}}&email={{email}}"class="text-blue-700 hover:underline">Confirm here</a>
+            </div>
         {% endif %}
     </div>
 </div>
