@@ -106,7 +106,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "app.custom_context_processors.custom_context",
+                "event_management.custom_context_processors.custom_context",
             ],
         },
     },

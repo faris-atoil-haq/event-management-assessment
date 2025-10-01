@@ -11,7 +11,7 @@
         {% if verified and option == 'signup'%}
             Your account has been successfully verified
             <div class="">
-                Please <a href="{% host_url 'login' host 'app' %}"class="font-medium text-blue-700 hover:underline">Login here</a>
+                Please <a href="{% url 'login'  %}"class="font-medium text-blue-700 hover:underline">Login here</a>
             </div>
         {% elif verified and option == 'reset'%}
             The password reset email has been sent to your email.
@@ -19,7 +19,7 @@
             Password has been successfully reset
             
             <div class="text-sm font-medium text-gray-500">
-                <a href="{% host_url 'login' host 'app' %}"class="text-blue-700 hover:underline">Login here</a>
+                <a href="{% url 'login'  %}"class="text-blue-700 hover:underline">Login here</a>
             </div>
         {% else %}
             The email has been sent to your email address. Please check your email.

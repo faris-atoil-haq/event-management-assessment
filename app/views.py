@@ -21,7 +21,7 @@ def dashboard(request):
 
 def login_auth(request):
     if request.user.is_authenticated:
-        return redirect(reverse('dashboard', host='app'))
+        return redirect(reverse('dashboard',))
     if request.POST:
         email = request.POST.get('email','')
         password = request.POST.get('password', '')
@@ -33,7 +33,7 @@ def login_auth(request):
                 verif = None
             if verif and verif.verified == True:
                 login(request, user)
-            return redirect(reverse('dashboard', host='app'))
+            return redirect(reverse('dashboard',))
         else:
             return render(request, 'app/templates/login.html', {'email': email, 'error_message': 'Invalid email or password.'})
     return render(request, 'app/templates/login.html')
@@ -133,16 +133,16 @@ def reset_password(request):
 @login_required
 def signout(request):
     if not request.user.is_authenticated:
-        return redirect(reverse('index', host='main'))
+        return redirect(reverse('index',))
 
     logout(request)
-    return redirect(reverse('index', host='main'))
+    return redirect(reverse('index',))
 
 
 def signup(request):
     print(request.POST)
     if request.user.is_authenticated:
-        return redirect(reverse('dashboard', host='app'))
+        return redirect(reverse('dashboard',))
 
     if request.POST:
         email = request.POST.get('email')

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import confirm, event_input, dashboard, signup, login_auth, signout
 
-app_name = 'app'
+# app_name = 'app'
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
