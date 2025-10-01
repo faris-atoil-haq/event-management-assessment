@@ -19,6 +19,8 @@ build/
 
 # Django
 media/
+db.sqlite3
+*.log
 
 # Node.js (for Tailwind)
 node_modules/
