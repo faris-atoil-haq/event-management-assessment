@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 # Initialize environment variables
 env = environ.Env()
@@ -120,18 +121,22 @@ WSGI_APPLICATION = "event_management.wsgi.application"
 
 # Database
 DATABASES = {
-    "default": {
-        "ENGINE": env("DB_ENGINE"),
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
-    },
+    # "default": {
+    #     "ENGINE": env("DB_ENGINE"),
+    #     "NAME": env("DB_NAME"),
+    #     "USER": env("DB_USER"),
+    #     "PASSWORD": env("DB_PASSWORD"),
+    #     "HOST": env("DB_HOST"),
+    #     "PORT": env("DB_PORT"),
+    # },
+    
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    "default": dj_database_url.config(
+        default=env('DATABASE_URL')
+    )
 }
 
 
