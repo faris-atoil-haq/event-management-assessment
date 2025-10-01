@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@tailwindcss/postcss": "^4.1.13",
     "flowbite": "^3.1.2",
-    "googleapis": "^39.2.0"
+    "googleapis": "^161.0.0",
+    "vercel": "^41.0.2"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.13",

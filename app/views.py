@@ -21,7 +21,7 @@ def dashboard(request):
 
 def login_auth(request):
     if request.user.is_authenticated:
-        return redirect(reverse('dashboard', host='app'))
+        return redirect(reverse('dashboard'))
     if request.POST:
         email = request.POST.get('email','')
         password = request.POST.get('password', '')
@@ -33,7 +33,7 @@ def login_auth(request):
                 verif = None
             if verif and verif.verified == True:
                 login(request, user)
-            return redirect(reverse('dashboard', host='app'))
+            return redirect(reverse('dashboard'))
         else:
             return render(request, 'app/templates/login.html', {'email': email, 'error_message': 'Invalid email or password.'})
     return render(request, 'app/templates/login.html')
@@ -133,16 +133,16 @@ def reset_password(request):
 @login_required
 def signout(request):
     if not request.user.is_authenticated:
-        return redirect(reverse('index', host='main'))
+        return redirect(reverse('index'))
 
     logout(request)
-    return redirect(reverse('index', host='main'))
+    return redirect(reverse('index'))
 
 
 def signup(request):
     print(request.POST)
     if request.user.is_authenticated:
-        return redirect(reverse('dashboard', host='app'))
+        return redirect(reverse('dashboard'))
 
     if request.POST:
         email = request.POST.get('email')
@@ -197,7 +197,10 @@ def signup(request):
             send_email('Account Available', email,
                        f'Hello,\n\nYou already have an account on our platform. Please log in with your email and password.\nIf you forgot your password, please reset your password.')
             return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'signup'})
-
-        return render(request, 'app/templates/confirm.html')
+        context = {
+            'verification_code': verif_code,
+            'email': email
+        }
+        return render(request, 'app/templates/confirm.html', context)
     email = request.GET.get('email', None)
     return render(request, 'app/templates/signup.html', {'email': email})

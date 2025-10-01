@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 import environ
+import dj_database_url
 
 # Initialize environment variables
 env = environ.Env()
@@ -31,12 +33,28 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 PROD = env.bool('PROD', default=False)
 STAGING = env.bool('STAGING', default=False)
-
+SITE_URL = env('SITE_URL', default='http://localhost:8000')
+SITE_URL_STATIC = env("SITE_URL_STATIC", default='http://localhost:8000/static/')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+IS_VERCEL = os.environ.get('VERCEL', False)
+# ALLOWED_HOSTS configuration
+if IS_VERCEL:
+    # For Vercel: Allow all Vercel domains
+    ALLOWED_HOSTS = [
+        '.vercel.app',
+        '.now.sh',
+        'localhost',
+        '127.0.0.1',
+    ]
+    # Add specific Vercel URLs from environment
+    vercel_url = os.environ.get('VERCEL_URL')
+    if vercel_url:
+        ALLOWED_HOSTS.append(vercel_url)
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -52,6 +70,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django_hosts.middleware.HostsRequestMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -88,7 +107,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "app.custom_context_processors.custom_context",
+                "event_management.custom_context_processors.custom_context",
             ],
         },
     },
@@ -110,10 +129,14 @@ DATABASES = {
     #     "HOST": env("DB_HOST"),
     #     "PORT": env("DB_PORT"),
     # },
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    "default": dj_database_url.config(
+        default=env('DATABASE_URL')
+    )
 }
 
 

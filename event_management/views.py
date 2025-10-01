@@ -1,15 +1,13 @@
 from django.shortcuts import redirect, render
-import uuid
-from django.conf import settings
-from django.contrib.auth import authenticate, login, logout
-from utils.mail import send_email
 from django_hosts.resolvers import reverse
-from app.models import User, Verification
 import logging as logging
 
 logger = logging.getLogger(__name__)
 
+
 def index(request, public=True):
+    if request.user.is_authenticated:
+        return redirect(reverse('dashboard'))
     return render(request, 'main/templates/index.html', {'public': public})
 
 def handle_400(request, exception):

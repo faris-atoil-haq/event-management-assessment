@@ -2,12 +2,13 @@
 
 from django.contrib import admin
 from .views import index
-from django.urls import path
+from django.urls import path, include
 
         
 # Main URL patterns
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('app/', include('app.urls')),
     path('', index, name='index'),
 ]
 
