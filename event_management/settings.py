@@ -32,7 +32,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 PROD = env.bool('PROD', default=False)
 STAGING = env.bool('STAGING', default=False)
-
+SITE_URL = env('SITE_URL', default='http://localhost:8000')
+SITE_URL_STATIC = env("SITE_URL_STATIC", default='http://localhost:8000/static/')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 IS_VERCEL = os.environ.get('VERCEL', False)
 # ALLOWED_HOSTS configuration
