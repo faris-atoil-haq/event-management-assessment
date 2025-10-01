@@ -12,11 +12,11 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def event_input(request):
-    return render(request, 'app/templates/event_input.html')
+    return render(request, 'app/templates/dashboard.html', {'events': True})
 
 @login_required
 def dashboard(request):
-    return render(request, 'app/templates/dashboard.html')
+    return render(request, 'app/templates/dashboard.html', {'dashboard': True})
 
 
 def login_auth(request):

@@ -5,7 +5,7 @@ from .views import confirm, event_input, dashboard, signup, login_auth, signout
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
-    path('events/', event_input, name='event_input'),
+    path('events/', event_input, name='events'),
     path('signup/', signup, name='signup'),
     path('login/', login_auth, name='login'),
     path('confirm/', confirm, name='confirm'),
