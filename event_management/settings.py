@@ -37,6 +37,14 @@ SITE_URL = env('SITE_URL', default='http://localhost:8000')
 SITE_URL_STATIC = env("SITE_URL_STATIC", default='http://localhost:8000/static/')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 IS_VERCEL = os.environ.get('VERCEL', False)
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic puts files
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Your static files directory
+
 # ALLOWED_HOSTS configuration
 if IS_VERCEL:
     # For Vercel: Allow all Vercel domains
@@ -45,12 +53,16 @@ if IS_VERCEL:
         '.now.sh',
         'localhost',
         '127.0.0.1',
+        'event-management-assessment.vercel.app'
     ]
     # Add specific Vercel URLs from environment
     vercel_url = os.environ.get('VERCEL_URL')
     if vercel_url:
         ALLOWED_HOSTS.append(vercel_url)
 
+    # Static files for Vercel
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Application definition
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
@@ -148,11 +160,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic puts files
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Your static files directory
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
