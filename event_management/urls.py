@@ -1,7 +1,7 @@
 '''event_management/urls.py'''
 
 from django.contrib import admin
-from .views import index
+from .views import landing_page
 from django.urls import path, include
 
         
@@ -9,7 +9,7 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('app/', include('app.urls')),
-    path('', index, name='index'),
+    path('', landing_page, name='landing_page'),
 ]
 
 # Error handlers

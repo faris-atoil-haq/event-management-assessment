@@ -52,7 +52,6 @@ if IS_VERCEL:
         ALLOWED_HOSTS.append(vercel_url)
 
 # Application definition
-
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     "django.contrib.admin",
@@ -64,35 +63,26 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     'app',
-    'django_hosts',
-    # For Styling
     'compressor',
 ]
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.middleware.security.SecurityMiddleware",
-    "django_hosts.middleware.HostsRequestMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_hosts.middleware.HostsResponseMiddleware",
 ]
 
-# login by EMAIL not username
+# Modify to login by EMAIL or username
 AUTHENTICATION_BACKENDS = [
-    'event_management.backends.ExtendedUserModelBackend',
+    'utils.backends.ExtendedUserModelBackend',
 ]
 
 ROOT_URLCONF = "event_management.urls"
-ROOT_HOSTCONF = "event_management.hosts"
-DEFAULT_HOST = "main"
-
-PARENT_HOST = env("PARENT_HOST")
-MAIN_APP_HOST = env("MAIN_APP_HOST", default="")
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/login/"
@@ -107,7 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "event_management.custom_context_processors.custom_context",
+                "utils.custom_context_processors.custom_context",
             ],
         },
     },
@@ -121,19 +111,6 @@ WSGI_APPLICATION = "event_management.wsgi.application"
 
 # Database
 DATABASES = {
-    # "default": {
-    #     "ENGINE": env("DB_ENGINE"),
-    #     "NAME": env("DB_NAME"),
-    #     "USER": env("DB_USER"),
-    #     "PASSWORD": env("DB_PASSWORD"),
-    #     "HOST": env("DB_HOST"),
-    #     "PORT": env("DB_PORT"),
-    # },
-    
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     "default": dj_database_url.config(
         default=env('DATABASE_URL')
     )
@@ -173,20 +150,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-if DEBUG:
-    # Development: Use local static files
-    STATIC_URL = "/static/"
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-    ]
-else:
-    # Production/Non-DEBUG: Use external CDN or static server
-    STATIC_URL = env('STATIC_URL_EXTERNAL',
-                     default='https://faris-atoil-haq.github.io/static/')
-    # Alternative: Use a local static server
-    # STATIC_URL = env('STATIC_URL_EXTERNAL', default='http://static.yourdomain.com/static/')
-
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic puts files
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Your static files directory
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -202,7 +168,14 @@ REST_FRAMEWORK = {
 
 # Configure Compressor
 COMPRESS_ROOT = BASE_DIR / 'static'
+COMPRESS_ENABLED = not DEBUG
 
-COMPRESS_ENABLED = True
+# Static files finders
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
 
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+# WhiteNoise configuration (since you have it installed)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
