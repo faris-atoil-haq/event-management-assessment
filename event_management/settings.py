@@ -43,7 +43,13 @@ IS_VERCEL = os.environ.get('VERCEL', False)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic puts files
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Your static files directory
+
+# Only use STATICFILES_DIRS in development
+if DEBUG and not IS_VERCEL:
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+else:
+    # Don't use STATICFILES_DIRS in production after collectstatic
+    STATICFILES_DIRS = []
 
 # ALLOWED_HOSTS configuration
 if IS_VERCEL:
