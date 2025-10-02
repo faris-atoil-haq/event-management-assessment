@@ -13,7 +13,6 @@ static/src/input.css
 
 # Python
 *.egg-info/
-dist/
 build/
 .pytest_cache/
 
