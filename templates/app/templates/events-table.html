@@ -1,0 +1,70 @@
+
+{% extends "_base.html" %}
+{% load static %}
+{% load hosts %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    {% if events %}
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Event Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Date
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Description
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Status
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events%}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{event.title}}
+                    </th>
+                    <td class="px-6 py-4">
+                        {% if event.date_start and event.date_end %}
+                        {{event.date_start|to_string}}  ~  {{event.date_end|to_string}}
+                        {% elif event.date_start %}
+                        {{event.date_start|to_string}}
+                        {% elif event.date_end %}
+                        {{event.date_end|to_string}}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if event.description %}
+                        {{event.description}}
+                        {% else %}
+                        No description available.
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if event.status == "upcoming" %}Upcoming{% elif event.status == "ongoing" %}Ongoing{% elif event.status == "completed" %}Completed{% elif event.status == "cancelled" %}Cancelled{% else %}-{% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span hx-get="{% url 'manage_event_detail' event.id %}?edit_mode=true" hx-target="#dashboard-content" hx-swap="innerHTML" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Edit</span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <span class="block p-4 text-sm text-center text-gray-700 dark:text-gray-400">
+            No events found. Please create one.
+        </span>
+    {% endif %}
+</div>
+{% endblock %}
