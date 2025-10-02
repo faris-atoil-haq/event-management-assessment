@@ -4,21 +4,51 @@ from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django_hosts.resolvers import reverse
 import uuid
-from .models import User, Verification
+from .models import User, Verification, Event
 from utils.mail import send_email
 import logging as logging
 
 logger = logging.getLogger(__name__)
 
-@login_required
-def event_input(request):
-    return render(request, 'app/templates/event_input.html')
 
 @login_required
-def dashboard(request):
-    return render(request, 'app/templates/dashboard.html')
+def dashboard(request, content_type='dashboard'):
+    return render(request, 'app/templates/app-dashboard.html', {content_type: True})
+
+@login_required
+def create_and_manage_events(request, id=None):
+    user = request.user
+    event = {'id': ''}
+    if id:
+        event = Event.objects.filter(id=id).first()
+        
+    if request.POST:
+        if not id:
+            event = Event.objects.create(user=user)
+        event.title = request.POST.get('name')
+        event.date_start = request.POST.get('date_start')
+        event.date_end = request.POST.get('date_end')
+        event.status = request.POST.get('status')
+        event.description = request.POST.get('description')
+        event.save()
+        
+        return redirect(reverse('events'))
+    return render(request, 'app/templates/manage-events-drawer.html', {'events': True, 'event': event})
+
+@login_required
+def events_table(request):
+    user = request.user
+    events = Event.objects.filter(user=user).order_by('-created_at')
+    return render(request, 'app/templates/events-table.html', {'events': events})
+
+@login_required
+def dashboard_content(request):
+    user = request.user
+    events = Event.objects.filter(user=user).order_by('date_start')
+    return render(request, 'app/templates/app-dashboard-content.html', {'dashboard': True, 'events': events})
 
 
+### Auth User Views ###
 def login_auth(request):
     if request.user.is_authenticated:
         return redirect(reverse('dashboard'))
@@ -52,82 +82,6 @@ def confirm(request):
             return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'signup'})
 
     return render(request, 'app/templates/confirm.html')
-
-
-def reset_password_email(request):
-    if request.POST:
-        email = request.POST.get('email')
-        user = User.objects.filter(email=email).first()
-        if user:
-            verif = Verification.objects.filter(user=user).first()
-            if verif.verified:
-                code = str(uuid.uuid4())
-                verif.code = code
-                verif.save()
-                reset_password_link = settings.PARENT_HOST + \
-                    reverse('reset_password')+f'?email={email}&code={code}'
-                if settings.PROD or settings.STAGING:
-                    reset_password_link = 'https://' + reset_password_link
-                else:
-                    reset_password_link = 'http://' + reset_password_link
-                print("Reset Password Link: ", reset_password_link)
-                send_email('Reset Password', email,
-                           f'Click the link to change your password: \n{reset_password_link}')
-            else:
-                link_verifikasi = settings.PARENT_HOST + \
-                    reverse('confirm')+f'?email={email}&code={verif.code}'
-                if settings.PROD or settings.STAGING:
-                    link_verifikasi = 'https://' + link_verifikasi
-                else:
-                    link_verifikasi = 'http://' + link_verifikasi
-                print("Email belum terverifikasi. Link: ", link_verifikasi)
-                send_email('Reset Password', email,
-                           f'Halo,\nAnda ingin melakukan pengaturan kata sandi Anda, namun kami melihat bahwa Anda belum menyelesaikan verifikasi email. Klik tautan berikut untuk melakukan verifikasi: \n{link_verifikasi}')
-        else:
-            signup_link = settings.PARENT_HOST + \
-                reverse('signup')+f'?email={email}'
-            if settings.PROD or settings.STAGING:
-                signup_link = 'https://' + signup_link
-            else:
-                signup_link = 'http://' + signup_link
-            print("Email belum terdaftar. Link: ", signup_link)
-            send_email('Reset Password', email,
-                       f'Halo,\nAnda ingin melakukan pengaturan kata sandi Anda, namun kami tidak menemukan email Anda. Daftarkan email Anda di sini: \n{signup_link}')
-        return redirect(reverse('confirm')+'?email='+email)
-    return render(request, 'reset_password_email.html')
-
-
-def reset_password(request):
-    if request.GET:
-        email = request.GET.get('email')
-        code = request.GET.get('code')
-
-        user = User.objects.filter(email=email).first()
-        if user:
-            verif = Verification.objects.filter(user=user).first()
-            if verif.verified and code == verif.code:
-                return render(request, 'reset_password.html', {'verified': True, 'email': email})
-    if request.POST:
-        email = request.POST.get('email')
-        user = User.objects.filter(email=email)
-        if user:
-            user = user[0]
-            if 'confirm_password' in request.POST:
-                password = request.POST.get('password')
-                user.set_password(password)
-                user.save()
-
-                return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'reseted'})
-            else:
-                verif_code = str(uuid.uuid4())
-                print("Reset Code: ", verif_code)
-                verif = user.verification
-                verif.code = verif_code
-                verif.save()
-
-                return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'reset'})
-
-    return redirect('reset_password_email')
 
 
 @login_required

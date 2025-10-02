@@ -4,19 +4,23 @@
 {% load static %}
 {% load hosts %}
 
-<html lang="en" class="">
+<html lang="en">
 
 {% include "head.html" %}
 {% if not request.user.is_authenticated %}
     {% include "main/templates/component/navbar.html" %}
 {% endif %}
 
-<body class="bg-white dark:bg-gray-900">
+<body class="bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
     <div class="container mx-auto mt-4">
-        {% block content %}
-        {% endblock content %}
-    </div>
-    <script src="{% static 'dist/flowbite.min.js' %}"></script>
+        <div id="block-container">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    <script src="{% static 'dist/flowbite.js' %}"></script>
+    <!-- scene-toggle.js -->
+    <script src="{% static 'js/scene-toggle.js' %}"></script>
 </body>
 
+{% include "footer.html" %}
 </html>
