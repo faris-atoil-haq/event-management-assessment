@@ -2,10 +2,18 @@
 {% extends "_base.html" %}
 
 {% block content %}
+{% load static %}
 
 <section class="bg-white dark:bg-gray-900">
   <div class="px-4">
-      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">{% if event.id %}Edit Event{% else %}Create Event{% endif %}</h2>
+        <div class="justify-between flex items-center">
+            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">{% if event.id %}Edit Event{% else %}Create Event{% endif %}</h2>
+            {% if event.id %}
+                <a href="{% url 'events' %}" class="cursor-pointer inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                    Back
+                </a>
+            {% endif %}
+        </div>
       <form {% if event.id %} action="{% url 'manage_event_detail' event.id %}" {% else %} action="{% url 'create_events' %}" {% endif %} method="post">
           {% csrf_token %}
           <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -49,12 +57,17 @@
               </div>
               <div class="mb-2 sm:col-span-2">
                   <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                  <textarea id="description" name="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
+                  <textarea id="description" name="description" rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
               </div>
           </div>
           <button type="submit" class="cursor-pointer inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
               {% if event.id %}Update event{% else %}Add event{% endif %}
           </button>
+          {% if event.id %}
+          <button type="submit" name="delete-event" class="cursor-pointer inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg">
+              Delete event
+          </button>
+          {% endif %}
       </form>
   </div>
 </section>
