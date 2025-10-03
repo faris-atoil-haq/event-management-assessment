@@ -6,21 +6,20 @@
 
 <html lang="en">
 
-{% include "head.html" %}
+{% include "header.html" %}
 {% if not request.user.is_authenticated %}
     {% include "main/templates/component/navbar.html" %}
 {% endif %}
 
 <body class="bg-white dark:bg-gray-900 bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern.svg')] dark:bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg')]">
-    <div class="container mx-auto mt-4">
-        <div id="block-container">
+    <div class="container mx-auto">
+        <div class="h-full" id="block-container">
             {% block content %}
             {% endblock content %}
         </div>
-    <script src="{% static 'dist/flowbite.js' %}"></script>
-    <!-- scene-toggle.js -->
-    <script src="{% static 'js/scene-toggle.js' %}"></script>
 </body>
 
-{% include "footer.html" %}
+{% block footer %}
+{% endblock footer %}
+
 </html>

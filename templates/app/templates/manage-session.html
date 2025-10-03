@@ -1,0 +1,81 @@
+{% load custom_tags %}
+<div id="session-track-{{ track.id }}">
+    <div id="session-result"></div>
+    <form id="session-form">
+        {% csrf_token%}
+        <div class="">
+            <input hidden name="track_id" value="{{ track.id }}">
+            {% if session%}
+            <input hidden name="session_id" value="{{ session.id }}">
+            <script>
+                document.getElementById("delete-session").classList.remove("hidden");
+                document.getElementById("delete-session").classList.add("inline-flex");
+            </script>
+            {% else %}
+            <script>
+                document.getElementById("delete-session").classList.add("hidden");
+                document.getElementById("delete-session").classList.remove("inline-flex");
+            </script>
+            {% endif %}
+            <div class="mb-2">
+                <label for="session_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Session Title</label>
+                <input value="{{ session.title }}" type="text" name="session_title" id="session_title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type session name" required="">
+            </div>
+            <div class="mb-2">
+                <label for="speaker" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Speaker</label>
+                <input value="{{ session.speaker }}" type="text" name="session_speaker" id="speaker" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter speaker name" required="">
+            </div>
+        
+            <div class="mb-2 grid grid-cols-2 gap-4">
+                <div>
+                    <label for="start-time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start time</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <input {% if session.start_time %} value="{{ session.start_time|date_to_hour_minute_format }}" {% endif %} type="time" name="session_start_time" id="start-time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                    </div>
+                </div>
+                <div>
+                    <label for="end-time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End time</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <input {% if session.end_time %} value="{{ session.end_time|date_to_hour_minute_format }}" {% endif %} type="time" name="session_end_time" id="end-time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" min="09:00" max="18:00" value="00:00" required />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                <textarea name="session_description" id="description" rows="3" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter session description here">{{ session.description }}</textarea>
+            </div>
+            
+            <div>
+                <span class="mt-5 block mb-2 text-sm font-medium text-gray-900 dark:text-white">List Session(s)</span>
+                {% if sessions %}
+                    <div class="h-20 p-2">
+                        {% for session in sessions %}
+                            <span hx-get="{% url 'load_session' session_id=session.id %}"
+                                class="w-full justify-center cursor-pointer mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                                hx-vals='{"from_session": "true"}'
+                                hx-target="#session-drawer-content"
+                                hx-indicator=".loading-drawer,.session-drawer-content"
+                                hx-swap="innerHTML">
+                                {{ session.title }} - {{ session.track.event.title }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <span class="block mb-2 text-sm text-gray-900 dark:text-white">
+                        No Session Available in this Track
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+</div>

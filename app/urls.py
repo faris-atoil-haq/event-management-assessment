@@ -1,13 +1,35 @@
 from django.urls import path
-from .views import (dashboard_content, events_table,
-                    confirm, dashboard, create_and_manage_events,
-                    signup, login_auth, signout)
+from .views import (
+     dashboard_content, 
+     events_table,
+     confirm, 
+     dashboard, 
+     create_and_manage_events,
+     signup, 
+     login_auth, 
+     signout, 
+     show_event_detail,
+     manage_track
+)
+from .views.session_manager import (
+     create_and_manage_session, 
+     load_session,
+     manage_track_session,
+     session_list
+)    
+from .views.attendee_manager import (
+     register_for_event, 
+     cancel_registration, 
+     attendee_list
+)
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
     path('dashboard_content/', dashboard_content, name='dashboard_content'),
 
     # Events URLs
+    path('remove_track/', manage_track, name='remove_track'),
+    path('add_track/', manage_track, name='add_track'),
     path('events/', dashboard, {'content_type': 'table'}, name='events'),
     path('events_table/', events_table, name='events_table'),
 
@@ -22,7 +44,27 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', login_auth, name='login'),
     path('confirm/', confirm, name='confirm'),
-    path('signout/', signout, name='signout'),
+    path('signout/', signout, name='signout'),   
+     
+    # Session Management URLs
+    path('track/<uuid:track_id>/sessions/',
+         session_list, name='session_list'),
+    path('track/<uuid:track_id>/sessions/manage/',
+         manage_track_session, name='manage_track_session'),
+    path('session/manage/',
+         create_and_manage_session, name='create_and_manage_session'),
+    path('load_session/<uuid:session_id>/',
+         load_session, name='load_session'),
+
+    # Attendee Management URLs
+    path('event/<uuid:event_id>/detail/',
+         show_event_detail, name='show_event_detail'),
+    path('event/<uuid:event_id>/register/',
+         register_for_event, name='register_event'),
+    path('event/<uuid:event_id>/cancel/',
+         cancel_registration, name='cancel_registration'),
+    path('event/<uuid:event_id>/attendees/',
+         attendee_list, name='attendee_list'),
 ]
 
 # Error handlers

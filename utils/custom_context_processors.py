@@ -1,19 +1,15 @@
 from django.conf import settings
+from app.constant.model_constant import *
 
 def custom_context(request):
     context = {
+        'STATUS_CHOICE': STATUS_CHOICES,
+        'ROLE_CHOICE': ROLE_CHOICES,
         'PROD': settings.PROD,
         'STAGING': settings.STAGING,
         'DEBUG': settings.DEBUG,
+        'CONSTANT': CONSTANT_LIST,
     }
-    
-    homepage_url = f"{request.__dict__.get('META').get('HTTP_HOST')}"
-    homepage_url_final = homepage_url
-    
-    if len(homepage_url.split('.')) > 1:
-        homepage_url_merge = ".".join(homepage_url.split('.')[1:])
-        homepage_url_final = homepage_url_merge.split('/')[0]
-    context['homepage_url'] = f"http://{homepage_url_final}"
     return context
 
     

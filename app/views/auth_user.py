@@ -63,6 +63,7 @@ def signup(request):
     if request.POST:
         email = request.POST.get('email')
         username = request.POST.get('username')
+        role = request.POST.get('sign_as')
         address = request.POST.get('address')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
@@ -74,9 +75,13 @@ def signup(request):
 
         try:
             user = User.objects.get(email=email)
+            error_message = 'Email already registered. Please use another email.'
+            return render(request, 'app/templates/signup.html', {'error_message': error_message})
         except User.DoesNotExist:
             try:
                 user = User.objects.get(username=username)
+                error_message = 'Username already taken. Please choose another username.'
+                return render(request, 'app/templates/signup.html', {'email': email, 'error_message': error_message})
             except User.DoesNotExist:
                 user = User.objects.create_user(
                     email=email,
@@ -91,17 +96,22 @@ def signup(request):
                     id=first_user.id).delete()
                 user = first_user
         except User.MultipleObjectsReturned:
-            first_user = User.objects.filter(
-                email=email).order_by('-created_at').first()
-            User.objects.filter(email=email).exclude(id=first_user.id).delete()
-            user = first_user
+            error_message = 'Email already registered. Please use another email.'
+            return render(request, 'app/templates/signup.html', {'email': email, 'error_message': error_message})
+
         verification = Verification.objects.filter(user=user).first()
+        
+        # For Email way verification
         confirm_signup_link = settings.PARENT_HOST + reverse('confirm')
-        confirm_signup_link = 'http://' + confirm_signup_link
+        if settings.DEBUG:
+            confirm_signup_link = 'http://' + confirm_signup_link
+        else:
+            confirm_signup_link = 'https://' + confirm_signup_link
         if not verification:
             verification, _ = Verification.objects.get_or_create(user=user)
             verification.verified = False
             verification.address = address
+            verification.role = role
             verification.code = verif_code
             verification.save()
         else:

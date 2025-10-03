@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 import environ
@@ -101,9 +102,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ROOT_URLCONF = "event_management.urls"
-
-LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = "/login/"
+PARENT_HOST = 'localhost:8000'
+LOGIN_URL = "/app/login/"
+LOGIN_REDIRECT_URL = "/app/login/"
 
 TEMPLATES = [
     {
@@ -132,6 +133,21 @@ DATABASES = {
     "default": dj_database_url.config(
         default=env('DATABASE_URL')
     )
+}
+
+# JWT Settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+
+    # Add custom claims
+    'UPDATE_LAST_LOGIN': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+
+    # Custom serializer
+    'TOKEN_OBTAIN_SERIALIZER': 'app.api.serializers.CustomTokenObtainPairSerializer',
 }
 
 
