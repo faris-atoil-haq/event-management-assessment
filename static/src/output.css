@@ -642,6 +642,9 @@
 .start-0 {
   inset-inline-start: calc(var(--spacing) * 0);
 }
+.end-0 {
+  inset-inline-end: calc(var(--spacing) * 0);
+}
 .end-2 {
   inset-inline-end: calc(var(--spacing) * 2);
 }
@@ -653,6 +656,12 @@
 }
 .top-2\.5 {
   top: calc(var(--spacing) * 2.5);
+}
+.top-10 {
+  top: calc(var(--spacing) * 10);
+}
+.top-15 {
+  top: calc(var(--spacing) * 15);
 }
 .top-100 {
   top: calc(var(--spacing) * 100);
@@ -2112,11 +2121,20 @@
 .py-10 {
   padding-block: calc(var(--spacing) * 10);
 }
+.py-20 {
+  padding-block: calc(var(--spacing) * 20);
+}
 .ps-3 {
   padding-inline-start: calc(var(--spacing) * 3);
 }
 .ps-10 {
   padding-inline-start: calc(var(--spacing) * 10);
+}
+.pe-3 {
+  padding-inline-end: calc(var(--spacing) * 3);
+}
+.pe-3\.5 {
+  padding-inline-end: calc(var(--spacing) * 3.5);
 }
 .pe-4 {
   padding-inline-end: calc(var(--spacing) * 4);

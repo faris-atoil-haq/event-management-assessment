@@ -15,9 +15,11 @@
         </div>
     </div>
     <div class="ms-2 flex-grow flex inline-flex items-center justify-end mt-5">
-        <button hx-get="{% url 'manage_session' track_id=track.id %}"
+        <button hx-get="{% url 'manage_track_session' track_id=track.id %}"
             hx-vals='{"from_track": "true"}'
             hx-target="#session-drawer-content"
+            hx-swap="innerHTML"
+            hx-indicator=".loading-drawer,.session-drawer-content"
             class="mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="document.getElementById('drawer-session-trigger').click()">
             Session
         </button>

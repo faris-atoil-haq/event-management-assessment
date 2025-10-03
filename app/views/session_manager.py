@@ -41,8 +41,12 @@ def create_session(request, event_id):
 @login_required
 def manage_track_session(request, track_id):
     track = get_object_or_404(Track, id=track_id)
-    
-    return HttpResponse('Manage track session')
+    sessions = track.sessions.all().order_by('start_time')
+    return render(request, 'app/templates/manage-session.html', {
+        'track': track,
+        'sessions': sessions
+    })
+
 @login_required
 def manage_session(request, session_id):
     session = get_object_or_404(Session, id=session_id, event__user=request.user)
