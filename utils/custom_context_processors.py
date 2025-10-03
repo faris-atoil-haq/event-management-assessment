@@ -1,6 +1,6 @@
 from django.conf import settings
 from app.models import Event, Verification
-
+from app.constant.model_constant import CONSTANT_LIST
 def custom_context(request):
     context = {
         'STATUS_CHOICE': Event.STATUS_CHOICES,
@@ -8,6 +8,7 @@ def custom_context(request):
         'PROD': settings.PROD,
         'STAGING': settings.STAGING,
         'DEBUG': settings.DEBUG,
+        'CONSTANT': CONSTANT_LIST,
     }
     return context
 
