@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.models import User
-
+from app.constant.model_constant import STATUS_CHOICES
 
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -22,14 +22,6 @@ class Event(models.Model):
     # Registration settings
     registration_open = models.BooleanField(default=True)
     registration_deadline = models.DateTimeField(null=True, blank=True)
-    # Status event
-    STATUS_CHOICES = [
-        ('draft', 'Draft'),
-        ('published', 'Published'),
-        ('ongoing', 'Ongoing'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
-    ]
     
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, default='draft')

@@ -8,6 +8,7 @@ from .views import (
      signup, 
      login_auth, 
      signout, 
+     show_event_detail,
      manage_track
 )
 from .views.session_manager import (
@@ -56,6 +57,8 @@ urlpatterns = [
          load_session, name='load_session'),
 
     # Attendee Management URLs
+    path('event/<uuid:event_id>/detail/',
+         show_event_detail, name='show_event_detail'),
     path('event/<uuid:event_id>/register/',
          register_for_event, name='register_event'),
     path('event/<uuid:event_id>/cancel/',

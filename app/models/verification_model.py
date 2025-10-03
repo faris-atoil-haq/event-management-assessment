@@ -1,11 +1,14 @@
 from django.db import models
-from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 from .event_model import Event
-from .session_model import Session
 import uuid
-from app.constant.model_constant import MANAGER_ROLE, MEMBER_ROLE
+from app.constant.model_constant import (
+    ROLE_CHOICES, 
+    ATTENDEE_STATUS,
+    MEMBER_ROLE,
+    REGISTERED_ATTENDEE
+)
 
 class Verification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -20,10 +23,6 @@ class Verification(models.Model):
     code = models.CharField(max_length=256, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    ROLE_CHOICES = [
-        (MEMBER_ROLE, 'Event Member'),
-        (MANAGER_ROLE, 'Event Manager')
-    ]
 
     role = models.CharField(
         max_length=20, choices=ROLE_CHOICES, default=MEMBER_ROLE)
@@ -34,29 +33,12 @@ class Verification(models.Model):
 
 class Attendee(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user_attendees')
     event = models.ForeignKey(
         Event, on_delete=models.CASCADE, related_name='attendees')
     registration_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, choices=[
-        ('registered', 'Terdaftar'),
-        ('confirmed', 'Dikonfirmasi'),
-        ('cancelled', 'Dibatalkan'),
-    ], default='registered')
-
-    class Meta:
-        unique_together = ['user', 'event']  # Mencegah pendaftaran ganda
+    status = models.CharField(max_length=20, choices=ATTENDEE_STATUS, default=REGISTERED_ATTENDEE)
 
     def __str__(self):
         return f"{self.user.username} - {self.event.title}"
-
-
-class SessionAttendee(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    attendee = models.ForeignKey(Attendee, on_delete=models.CASCADE)
-    session = models.ForeignKey(
-        Session, on_delete=models.CASCADE, related_name='attendees')
-    registered_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ['attendee', 'session']

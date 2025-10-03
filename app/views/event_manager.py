@@ -60,6 +60,7 @@ def dashboard_content(request):
         events = Event.objects.all().order_by('date_start')
     elif role == MANAGER_ROLE:
         events = Event.objects.filter(user=user).order_by('date_start')
+    events = events.filter(status='published')
     return render(request, 'app/templates/app-dashboard-content.html', {'dashboard': True, 'events': events})
 
 @login_required
@@ -94,3 +95,10 @@ def manage_track(request):
             event=event).count() if event else 0
         return render(request, 'app/templates/manage-tracks.html', {'number': track_count, 'track': track if track else None, 'event': event})
     return HttpResponse(200)
+
+
+def show_event_detail(request, event_id):
+    event = Event.objects.filter(id=event_id).first()
+    if not event:
+        return HttpResponse("Event not found", status=404)
+    return render(request, 'app/templates/attendee-event-detail.html', {'event': event})
