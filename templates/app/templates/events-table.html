@@ -22,9 +22,11 @@
                 <th scope="col" class="px-6 py-3">
                     Status
                 </th>
-                <th scope="col" class="px-6 py-3">
-                    <span class="sr-only">Edit</span>
-                </th>
+                {% if request.user.verification.role == 'manager' %}
+                    <th scope="col" class="px-6 py-3">
+                        <span class="sr-only">Edit</span>
+                    </th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -46,22 +48,32 @@
                     </td>
                     <td class="px-6 py-4">
                         {% if event.description %}
-                        {{event.description}}
+                            {{event.description}}
                         {% else %}
                         No description available.
                         {% endif %}
                     </td>
                     <td class="px-6 py-4">
-                        {% if event.status == "upcoming" %}Upcoming{% elif event.status == "ongoing" %}Ongoing{% elif event.status == "completed" %}Completed{% elif event.status == "cancelled" %}Cancelled{% else %}-{% endif %}
+                        {% if event.status %}
+                            {% for status in STATUS_CHOICE %}
+                                {% if event.status == status.0 %}
+                                    {{ status.1 }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            -
+                        {% endif %}
                     </td>
-                    <td class="px-6 py-4 text-right">
-                        <span 
-                            hx-get="{% url 'manage_event_detail' event.id %}?edit_mode=true" 
-                            hx-target="#dashboard-content" 
-                            hx-swap="innerHTML" 
-                            hx-indicator=".loading-animation,.event-table"
-                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 cursor-pointer">Edit</span>
-                    </td>
+                    {% if request.user.verification.role == 'manager' %}
+                        <td class="px-6 py-4 text-right">
+                            <span 
+                                hx-get="{% url 'manage_event_detail' event.id %}?edit_mode=true" 
+                                hx-target="#dashboard-content" 
+                                hx-swap="innerHTML" 
+                                hx-indicator=".loading-animation,.event-table"
+                                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 cursor-pointer">Edit</span>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>

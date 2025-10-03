@@ -1,0 +1,33 @@
+
+{% load static %}
+
+<div class="flex items-center justify-between mb-2 h-20" id="track-{{ track.id }}">
+    <div class="flex w-full">
+        <input hidden name="track_id" value="{{ track.id }}">
+        <div class="w-full sm:col-span-2">
+            <label for="track_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Track Name</label>
+            <input required type="text" name="track_name" id="track_name" value="{{track.name}}"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 required" placeholder="Type event name" required="">
+        </div>
+        <div class="w-full ms-2 sm:col-span-2">
+            <label for="track_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+            <input id="track_description" name="track_description" value="{{track.description}}" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here">
+        </div>
+    </div>
+    <div class="ms-2 flex-grow flex inline-flex items-center justify-end mt-5">
+        <button hx-get="{% url 'manage_session' track_id=track.id %}"
+            hx-vals='{"from_track": "true"}'
+            hx-target="#session-drawer-content"
+            class="mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="document.getElementById('drawer-session-trigger').click()">
+            Session
+        </button>
+        <button type="button" 
+            hx-post="{% url 'remove_track' %}"
+            hx-vals='{"track_id": "{{ track_id }}", "event_id": "{{ event.id }}", "delete_track": "true"}'
+            hx-target="#track-{{ track_id }}"
+            hx-swap="outerHTML"
+            class="mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
+                X
+        </button>
+    </div>
+</div>

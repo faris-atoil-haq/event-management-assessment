@@ -1,19 +1,14 @@
 from django.conf import settings
+from app.models import Event, Verification
 
 def custom_context(request):
     context = {
+        'STATUS_CHOICE': Event.STATUS_CHOICES,
+        'ROLE_CHOICE': Verification.ROLE_CHOICES,
         'PROD': settings.PROD,
         'STAGING': settings.STAGING,
         'DEBUG': settings.DEBUG,
     }
-    
-    homepage_url = f"{request.__dict__.get('META').get('HTTP_HOST')}"
-    homepage_url_final = homepage_url
-    
-    if len(homepage_url.split('.')) > 1:
-        homepage_url_merge = ".".join(homepage_url.split('.')[1:])
-        homepage_url_final = homepage_url_merge.split('/')[0]
-    context['homepage_url'] = f"http://{homepage_url_final}"
     return context
 
     

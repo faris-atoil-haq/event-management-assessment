@@ -30,3 +30,10 @@ def to_string(date):
     if date:
         return str(date)[0:10]
     return ""
+
+@register.filter
+def check_newly_created(event):
+    time_diff = abs((event.updated_at - event.created_at).total_seconds())
+    if time_diff < 1:
+        return True
+    return False
