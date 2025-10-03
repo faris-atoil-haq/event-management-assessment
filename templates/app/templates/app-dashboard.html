@@ -120,7 +120,7 @@
    <div class="p-10 mt-5 sm:ml-64 h-full">
          <div id="dashboard-content" class="h-screen p-4 mt-10 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
             <div class="hidden loading-animation">
-               {% include "app/templates/component/agenda-skeleton.html" %}
+               {% include "app/templates/component/history-skeleton.html" %}
             </div>
             {% if dashboard %}
             <div class="mb-4" hx-get="{% url 'dashboard_content' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">

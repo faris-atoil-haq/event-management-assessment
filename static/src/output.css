@@ -2001,6 +2001,9 @@
 .bg-red-600 {
   background-color: var(--color-red-600);
 }
+.bg-red-700 {
+  background-color: var(--color-red-700);
+}
 .bg-transparent {
   background-color: transparent;
 }
@@ -2628,6 +2631,13 @@
     }
   }
 }
+.hover\:bg-red-100 {
+  &:hover {
+    @media (hover: hover) {
+      background-color: var(--color-red-100);
+    }
+  }
+}
 .hover\:bg-red-600 {
   &:hover {
     @media (hover: hover) {
@@ -2742,6 +2752,11 @@
     --tw-ring-color: var(--color-blue-500);
   }
 }
+.focus\:ring-blue-700 {
+  &:focus {
+    --tw-ring-color: var(--color-blue-700);
+  }
+}
 .focus\:ring-gray-100 {
   &:focus {
     --tw-ring-color: var(--color-gray-100);
@@ -2780,6 +2795,11 @@
 .focus\:ring-primary-600 {
   &:focus {
     --tw-ring-color: var(--color-primary-600);
+  }
+}
+.focus\:ring-primary-700 {
+  &:focus {
+    --tw-ring-color: var(--color-primary-700);
   }
 }
 .focus\:ring-red-300 {
@@ -3342,6 +3362,11 @@
     background-color: var(--color-primary-900);
   }
 }
+.dark\:bg-red-600 {
+  &:where(.dark, .dark *) {
+    background-color: var(--color-red-600);
+  }
+}
 .dark\:bg-\[url\(\'https\:\/\/flowbite\.s3\.amazonaws\.com\/docs\/jumbotron\/hero-pattern-dark\.svg\'\)\] {
   &:where(.dark, .dark *) {
     background-image: url('https://flowbite.s3.amazonaws.com/docs/jumbotron/hero-pattern-dark.svg');
@@ -3473,6 +3498,15 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-red-600);
+      }
+    }
+  }
+}
+.dark\:hover\:bg-red-700 {
+  &:where(.dark, .dark *) {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-700);
       }
     }
   }
@@ -3625,6 +3659,7 @@
   :root, :host {
     --font-sans: 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-mono: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace';
+    --color-red-100: #FEE2E2;
     --color-red-300: #FCA5A5;
     --color-red-500: #EF4444;
     --color-red-600: #DC2626;

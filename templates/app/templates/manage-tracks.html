@@ -20,7 +20,7 @@
             hx-target="#session-drawer-content"
             hx-swap="innerHTML"
             hx-indicator=".loading-drawer,.session-drawer-content"
-            class="mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="document.getElementById('drawer-session-trigger').click()">
+            class="cursor-pointer mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="document.getElementById('drawer-session-trigger').click()">
             Session
         </button>
         <button type="button" 
@@ -28,7 +28,7 @@
             hx-vals='{"track_id": "{{ track.id }}", "event_id": "{{ event.id }}", "delete_track": "true"}'
             hx-target="#track-{{ track.id }}"
             hx-swap="outerHTML"
-            class="mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
+            class="cursor-pointer mt-2 me-2 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800">
                 X
         </button>
     </div>

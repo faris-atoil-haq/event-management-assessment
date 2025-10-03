@@ -25,7 +25,7 @@ def create_and_manage_session(request):
             session = get_object_or_404(Session, id=request.POST['session_id'])
         else:
             session = Session(track=track)
-        if request.POST.get('delete-session'):
+        if request.POST.get('delete_session'):
             session.delete()
             return redirect(reverse('manage_track_session', args=[track.id]))
         session.title = request.POST['session_title']
