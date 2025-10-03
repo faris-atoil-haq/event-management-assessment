@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .event_model import Event
 from .session_model import Session
 import uuid
+from app.constant.model_constant import MANAGER_ROLE, MEMBER_ROLE
+
 class Verification(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(
@@ -19,12 +21,12 @@ class Verification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     ROLE_CHOICES = [
-        ('member', 'Event Member'),
-        ('manager', 'Event Manager')
+        (MEMBER_ROLE, 'Event Member'),
+        (MANAGER_ROLE, 'Event Manager')
     ]
 
     role = models.CharField(
-        max_length=20, choices=ROLE_CHOICES, default='member')
+        max_length=20, choices=ROLE_CHOICES, default=MEMBER_ROLE)
 
     def __str__(self):
         return 'Verification for: ' + self.user.first_name

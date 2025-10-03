@@ -11,8 +11,8 @@ from .views import (
      manage_track
 )
 from .views.session_manager import (
-     create_session, 
-     manage_session, 
+     create_and_manage_session, 
+     load_session,
      manage_track_session,
      session_list
 )    
@@ -48,12 +48,12 @@ urlpatterns = [
     # Session Management URLs
     path('track/<uuid:track_id>/sessions/',
          session_list, name='session_list'),
-    path('track/<uuid:track_id>/sessions/create/',
-         create_session, name='create_session'),
     path('track/<uuid:track_id>/sessions/manage/',
          manage_track_session, name='manage_track_session'),
-    path('session/<uuid:session_id>/manage/',
-         manage_session, name='manage_session'),
+    path('session/manage/',
+         create_and_manage_session, name='create_and_manage_session'),
+    path('load_session/<uuid:session_id>/',
+         load_session, name='load_session'),
 
     # Attendee Management URLs
     path('event/<uuid:event_id>/register/',

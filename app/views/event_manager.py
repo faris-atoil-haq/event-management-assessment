@@ -6,6 +6,7 @@ from django.urls import reverse
 from app.models import Event, Track
 import logging as logging
 from utils.check_newly_object import auto_refresh_db
+from app.constant.model_constant import MANAGER_ROLE, MEMBER_ROLE
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +55,11 @@ def events_table(request):
 @login_required
 def dashboard_content(request):
     user = request.user
-    events = Event.objects.filter(user=user).order_by('date_start')
+    role = user.verification.role
+    if role == MEMBER_ROLE:
+        events = Event.objects.all().order_by('date_start')
+    elif role == MANAGER_ROLE:
+        events = Event.objects.filter(user=user).order_by('date_start')
     return render(request, 'app/templates/app-dashboard-content.html', {'dashboard': True, 'events': events})
 
 @login_required

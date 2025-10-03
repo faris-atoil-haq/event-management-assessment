@@ -37,3 +37,9 @@ def check_newly_created(event):
     if time_diff < 1:
         return True
     return False
+
+@register.filter
+def date_to_hour_minute_format(date):
+    if date:
+        return date.strftime("%H:%M")
+    return ""

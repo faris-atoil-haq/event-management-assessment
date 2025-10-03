@@ -1,0 +1,21 @@
+
+
+<div class="block space-y-4 md:flex md:space-y-0 md:space-x-4 rtl:space-x-reverse">
+    <!-- Modal toggle -->
+    <button id="timeline-modal-toggle-btn" data-modal-target="medium-modal" data-modal-toggle="medium-modal" type="button" >
+    </button>
+</div>
+
+<!-- Default Modal -->
+<div id="medium-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-lg max-h-full">
+        <!-- Modal content -->
+         <div id="timeline-modal-content" class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+            {% include 'app/templates/component/history-skeleton.html'%}
+        </div>
+    </div>
+</div>
+
+<script>
+    initModals();
+</script>

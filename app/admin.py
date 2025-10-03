@@ -18,7 +18,7 @@ class TrackAdmin(admin.ModelAdmin):
 
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
-    list_display = ['title', 'event', 'track', 'speaker', 'start_time', 'end_time', 'capacity']
+    list_display = ['title', 'track', 'speaker', 'start_time', 'end_time', 'created_at']
     list_filter = ['track', 'start_time']
     search_fields = ['title', 'speaker']
     
