@@ -117,8 +117,8 @@
       </div>
    </aside>
 
-   <div class="p-10 mt-5 sm:ml-64 h-full">
-         <div id="dashboard-content" class="h-screen p-4 mt-10 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+   <div class="p-10 mt-5 sm:ml-64">
+         <div id="dashboard-content" class="p-4 mt-10 {% if not manage %}border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 {% endif %}">
             <div class="hidden loading-animation">
                {% include "app/templates/component/history-skeleton.html" %}
             </div>

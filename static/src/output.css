@@ -1092,6 +1092,12 @@
 .mt-27 {
   margin-top: calc(var(--spacing) * 27);
 }
+.mt-30 {
+  margin-top: calc(var(--spacing) * 30);
+}
+.mt-40 {
+  margin-top: calc(var(--spacing) * 40);
+}
 .apexcharts-canvas {
   & .apexcharts-tooltip {
     background-color: white !important;
@@ -5426,6 +5432,11 @@
 .dark\:bg-red-600 {
   &:where(.dark, .dark *) {
     background-color: var(--color-red-600);
+  }
+}
+.dark\:bg-red-900 {
+  &:where(.dark, .dark *) {
+    background-color: var(--color-red-900);
   }
 }
 .dark\:bg-\[url\(\'https\:\/\/flowbite\.s3\.amazonaws\.com\/docs\/jumbotron\/hero-pattern-dark\.svg\'\)\] {

@@ -1,9 +1,14 @@
 {% load custom_tags %}
-<form id="register-form" method="POST" action="{% url 'register_event' event.id %}">
+
+<form id="register-form" method="POST" action="{% url 'register_event' event.id %}" class="p-5">
     {% csrf_token %}
     <input hidden name="register_with_view" value="">
     <!-- Modal body -->
-     <h3 class="p-4 mb-1 text-xl font-bold text-gray-900 dark:text-white">{{event.title}}</h3>
+    {% if event.is_full %}
+        <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">{{ event.title }}<span class="bg-red-100 text-primary-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-primary-300 ms-3">Fully Booked</span></h3>
+    {% else %}
+        <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">{{ event.title }}<span class="bg-primary-100 text-primary-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-primary-900 dark:text-primary-300 ms-3">Available Slots: {{event.attendee_count}}/{{event.capacity}}</span></h3>
+    {% endif %}
                 
     <div class="p-4">
         <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -22,7 +27,7 @@
                 <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">{{track.description}}</time>
                 {% for session in track.sessions.all %}
                 <button type="button" class="py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                    {{session.title}} - {{session.speaker}} - {{session.start_time|date_to_hour_minute_format}} to {{session.end_time|date_to_hour_minute_format}}
+                    Session {{forloop.counter}} : {{session.title}} - {{session.speaker}} - {{session.start_time|date_to_hour_minute_format}} to {{session.end_time|date_to_hour_minute_format}}
                 </button></br>
                 {% endfor %}
             </li>
@@ -30,12 +35,12 @@
         </ol>
     </div>
     <script>
-        {% if event.attendees == request.user.user_attendees %}
+        {% if event|check_attend_to_event:request.user %}
+            document.querySelector('.non-registered-button').classList.add('hidden');
+            document.querySelector('.registered-button').classList.remove('hidden');
+        {% else %}
             document.querySelector('.registered-button').classList.add('hidden');
             document.querySelector('.non-registered-button').classList.remove('hidden');
-        {% else %}
-            document.querySelector('.registered-button').classList.remove('hidden');
-            document.querySelector('.non-registered-button').classList.add('hidden');
         {% endif %}
     </script>
 </form>
