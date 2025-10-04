@@ -27,7 +27,7 @@ def register_for_event(request, event_id):
         messages.warning(request, 'You are already registered for this event!')
     if 'register_with_view' in request.POST:
         if registered:
-            return redirect('cancel_registration', request,event_id)
+            return cancel_registration(request, event_id)
         return redirect('dashboard')
     return redirect('event_detail', event_id=event_id)
 
