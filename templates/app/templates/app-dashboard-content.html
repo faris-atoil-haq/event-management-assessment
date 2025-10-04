@@ -36,8 +36,13 @@
                         {% else %}
                             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">{{ event.title }}<span class="bg-primary-100 text-primary-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-primary-900 dark:text-primary-300 ms-3">Available Slots: {{event.attendee_count}}/{{event.capacity}}</span></h3>
                         {% endif %}
-                        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{{ event.date_start|date:"Y F d" }} - {{ event.date_end|date:"Y F d" }}</time>
+                        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{{ event.date_start|date:"d F Y" }} - {{ event.date_end|date:"d F Y" }}</time>
+                        <p class="mb-2 text-sm text-gray-700 dark:text-gray-300">
+                            <strong>Venue:</strong> {{ event.venue }}<br>
+                            <strong>Address:</strong> {{ event.venue_address }}
+                        </p>
                         <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{% if event.description %}{{ event.description }}{% else %}No description available.{% endif %}</p>
+
                         <a  hx-get="{% url 'show_event_detail' event_id=event.id %}" 
                             hx-target="#timeline-modal-content" 
                             hx-swap="innerHTML" 

@@ -11,6 +11,10 @@
     {% endif %}
                 
     <div class="p-4">
+        <p class="mb-2 text-sm text-gray-700 dark:text-gray-300">
+            <strong>Venue:</strong> {{ event.venue }}<br>
+            <strong>Address:</strong> {{ event.venue_address }}
+        </p>
         <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             {{event.description}}
         </p>
