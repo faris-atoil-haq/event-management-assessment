@@ -1,44 +1,36 @@
 
 {% extends "_base.html" %}
 {% load static %}
+
 {% load custom_tags %}
 
 {% block content %}
+
 <style>
-    .htmx-request.loading-modal {
-        display: block !important;
-    }
-    .htmx-request.timeline-modal-content {
-        display: none !important;
-    }
     .htmx-request.event-loading-indicator {
         display: block !important;
     }
-    .htmx-request.event-lists-content {
+    .htmx-request.event-table-content {
         display: none !important;
     }
 </style>
-
-{% include "app/templates/component/modal-block.html" %}
-
 <input
     type="text"
     name="event_search"
     hx-post="{% url 'search_events' %}"
+    hx-vals='{"from":"table"}'
     hx-trigger="keyup changed delay:250ms, load"
-    hx-vals='{"from":"timeline"}'
-    hx-indicator=".event-loading-indicator,.event-lists-content"
-    hx-target="#event-lists"
+    hx-indicator=".event-loading-indicator,.event-table-content"
+    hx-target="#event-table-content"
     placeholder="Search Event"
     class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
 >
-    <div class="mt-4">
-        <div class="event-loading-indicator hidden ">
-            {% include "app/templates/component/history-skeleton.html" %}
-        </div>
+<div class="mt-4">
+    <div class="event-loading-indicator hidden ">
+        {% include "app/templates/component/table-skeleton.html" %}
     </div>
+</div>
 
-    <div id="event-lists" class="event-lists-content">
-    </div>
-
+<div id="event-table-content" class="event-table-content">
+</div>
 {% endblock %}

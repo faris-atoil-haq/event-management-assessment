@@ -1,11 +1,8 @@
 
-{% extends "_base.html" %}
 {% load static %}
-
 {% load custom_tags %}
 
-{% block content %}
-<div class="event-table relative overflow-x-auto shadow-md sm:rounded-lg">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     {% if events %}
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -17,7 +14,10 @@
                     Date
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Description
+                    Capacity
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Venue Address
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Status
@@ -47,10 +47,21 @@
                         {% endif %}
                     </td>
                     <td class="px-6 py-4">
-                        {% if event.description %}
-                            {{event.description}}
+                        {% if event.capacity %}
+                            {{event.capacity}}
                         {% else %}
-                        No description available.
+                            No capacity available.
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if event.venue and event.venue_address %}
+                            {{event.venue}} - {{event.venue_address}}
+                        {% elif event.venue %}
+                            {{event.venue}}
+                        {% elif event.venue_address %}
+                            {{event.venue_address}}
+                        {% else %}
+                            No venue information available.
                         {% endif %}
                     </td>
                     <td class="px-6 py-4">
@@ -84,4 +95,3 @@
         </span>
     {% endif %}
 </div>
-{% endblock %}

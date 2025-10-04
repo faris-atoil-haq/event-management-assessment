@@ -3,21 +3,17 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.urls import reverse
+from app.constant.view_constant import TEMPLATE_MAPPER
 from app.models import Event, Track
 import logging as logging
 from utils.check_newly_object import auto_refresh_db
-from app.constant.model_constant import MANAGER_ROLE, MEMBER_ROLE
-
+from app.constant.model_constant import MANAGER_ROLE
+from django.db.models import Q
 logger = logging.getLogger(__name__)
 
 
 @login_required
-def dashboard(request, content_type='dashboard'):
-    # Clean up newly created events
-    res = auto_refresh_db(user=request.user)
-    print(f"Cleanup newly created events: {res}")
-    logger.info(f"Cleanup newly created events: {res}")
-
+def dashboard(request, content_type='timeline'):
     return render(request, 'app/templates/app-dashboard.html', {content_type: True})
 
 @login_required
@@ -51,20 +47,30 @@ def create_and_manage_events(request, id=None):
 
 @login_required
 def events_table(request):
+    return render(request, 'app/templates/manage-events.html')
+
+def search_events(request):
     user = request.user
-    events = Event.objects.filter(user=user).order_by('-created_at')
-    return render(request, 'app/templates/events-table.html', {'events': events})
+    search = request.POST.get('event_search', '').strip()
+    request_from = request.POST.get('from')
+    template_page = TEMPLATE_MAPPER.get(request_from, 'app/templates/events-table.html')
+    query = Q()
+    if request_from != 'table':
+        query &= Q(status='published')
+
+    role = user.verification.role
+    if role == MANAGER_ROLE and request_from == 'table':
+        query &= Q(user=user)
+
+    if search:
+        query &= Q(title__icontains=search)
+    events = Event.objects.filter(query).order_by('-created_at')
+    
+    return render(request, template_page, {'events': events})
 
 @login_required
-def dashboard_content(request):
-    user = request.user
-    role = user.verification.role
-    if role == MEMBER_ROLE:
-        events = Event.objects.all().order_by('date_start')
-    elif role == MANAGER_ROLE:
-        events = Event.objects.filter(user=user).order_by('date_start')
-    events = events.filter(status='published')
-    return render(request, 'app/templates/app-dashboard-content.html', {'dashboard': True, 'events': events})
+def timeline(request):
+    return render(request, 'app/templates/app-dashboard-content.html', {'timeline': True})
 
 @login_required
 def manage_track(request):
@@ -74,7 +80,6 @@ def manage_track(request):
             Track.objects.filter(id=track_id).delete()
             return HttpResponse("")
 
-        print(f"Saving Tracks: {request.POST}")
         track_ids = request.POST.getlist('track_id')
         names = request.POST.getlist('track_name')
         descriptions = request.POST.getlist('track_description', '')

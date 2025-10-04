@@ -15,6 +15,9 @@
       .htmx-request.event-table {
          display: none !important;
       }
+      .htmx-request.timeline-table {
+         display: none !important;
+      }
    </style>
    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -40,7 +43,7 @@
                   <div>
                   <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                      <span class="sr-only">Open user menu</span>
-                     <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                     <div class="cursor-pointer relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                         <span class="font-medium text-gray-600 dark:text-gray-300">{{ request.user|get_initial_name }}</span>
                      </div>
                   </button>
@@ -72,7 +75,7 @@
             <li>
                <a href="{% url 'dashboard'  %}" 
                   class="
-                     {% if dashboard %} 
+                     {% if timeline %} 
                         dark:bg-gray-700 dark:text-white 
                         bg-gray-100 text-gray-900
                      {% endif %} 
@@ -118,16 +121,16 @@
    </aside>
 
    <div class="p-10 mt-5 sm:ml-64">
-         <div id="dashboard-content" class="p-4 mt-10 {% if not manage %}border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 {% endif %}">
+         <div id="dashboard-content" class="p-4 mt-10">
             <div class="hidden loading-animation">
                {% include "app/templates/component/history-skeleton.html" %}
             </div>
-            {% if dashboard %}
-            <div class="mb-4" hx-get="{% url 'dashboard_content' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+            {% if timeline %}
+            <div class="mb-4 timeline-table" id="timeline" hx-get="{% url 'timeline' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                {% include "app/templates/component/history-skeleton.html" %}
             </div>
             {% elif table %}
-            <div class="mb-4" hx-get="{% url 'events_table' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+            <div class="mb-4 event-table" id="events_table" hx-get="{% url 'events_table' %}" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
                {% include "app/templates/component/table-skeleton.html" %}
             </div>
 

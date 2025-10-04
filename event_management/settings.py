@@ -208,3 +208,33 @@ STATICFILES_FINDERS = [
 
 # WhiteNoise configuration (since you have it installed)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Email Configuration
+EMAIL_BACKEND = env(
+    'EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+
+# Session settings
+# 30 days (only used when remember me is checked)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+# Default behavior (overridden by remember me)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True  # Update session expiry on every request
+
+# Security settings for sessions
+SESSION_COOKIE_SECURE = True  # Only send over HTTPS in production
+SESSION_COOKIE_HTTPONLY = True  # Prevent JavaScript access to session cookies
+SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
+
+# Optional: Use database sessions instead of file-based (more reliable)
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+CSRF_COOKIE_SECURE = True  # Only send CSRF cookie over HTTPS in production
+CSRF_COOKIE_HTTPONLY = True  # Prevent JavaScript access to CSRF cookie

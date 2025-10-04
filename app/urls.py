@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (
-     dashboard_content, 
+    timeline,
      events_table,
      confirm, 
      dashboard, 
@@ -9,7 +9,10 @@ from .views import (
      login_auth, 
      signout, 
      show_event_detail,
-     manage_track
+     manage_track,
+     reset_password_email,
+     reset_password,
+     search_events
 )
 from .views.session_manager import (
      create_and_manage_session, 
@@ -22,16 +25,18 @@ from .views.attendee_manager import (
      cancel_registration, 
      attendee_list
 )
+from .views.documentation_view import documentation
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
-    path('dashboard_content/', dashboard_content, name='dashboard_content'),
+    path('timeline/', timeline, name='timeline'),
 
     # Events URLs
     path('remove_track/', manage_track, name='remove_track'),
     path('add_track/', manage_track, name='add_track'),
     path('events/', dashboard, {'content_type': 'table'}, name='events'),
     path('events_table/', events_table, name='events_table'),
+    path('search_events/', search_events, name='search_events'),
 
     # Management URLs
     path('manage_events/', dashboard,
@@ -44,8 +49,11 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', login_auth, name='login'),
     path('confirm/', confirm, name='confirm'),
-    path('signout/', signout, name='signout'),   
-     
+    path('signout/', signout, name='signout'),
+    path('reset_password_email/', reset_password_email,
+         name='reset_password_email'),
+    path('reset_password/', reset_password, name='reset_password'),
+
     # Session Management URLs
     path('track/<uuid:track_id>/sessions/',
          session_list, name='session_list'),
@@ -65,6 +73,10 @@ urlpatterns = [
          cancel_registration, name='cancel_registration'),
     path('event/<uuid:event_id>/attendees/',
          attendee_list, name='attendee_list'),
+    
+    # Documentation
+    path('documentation/',
+         documentation, name='documentation'),
 ]
 
 # Error handlers

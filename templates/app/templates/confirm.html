@@ -4,21 +4,26 @@
 
 
 {% block content %}
-  
 
-<div class="flex justify-center py-8">
-    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow md:p-8">
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow md:p-8 dark:border-gray-700 text-gray-900 dark:text-white dark:bg-gray-800">
         {% if verified and option == 'signup'%}
             Your account has been successfully verified
             <div class="">
                 Please <a href="{% url 'login'  %}"class="font-medium text-blue-700 hover:underline">Login here</a>
+            </div>        
+        {% elif verified and option == 'reset'%}
+            Password reset email has been sent to your email address.
+        {% elif verified and option == 'reseted'%}
+            Password has been successfully reset
+            
+            <div class="text-sm font-medium text-gray-500">
+                <a href="{% url 'login' %}"class="text-blue-700 hover:underline">Login here</a>
             </div>
         {% else %}
-            {% comment %} The email has been sent to your email address. Please check your email. {% endcomment %}
-             Account has been created. Please confirm your account below.
-            <div class="text-sm font-medium text-gray-500">
-                <a href="{% url 'confirm'  %}?code={{verification_code}}&email={{email}}"class="text-blue-700 hover:underline">Confirm here</a>
-            </div>
+            <p>The email has been sent to your email</p>
+            <span class="font-medium hover:underline">({{email}}).</span>
+            <p>Please check your email.</p>
         {% endif %}
     </div>
 </div>
