@@ -43,3 +43,9 @@ def date_to_hour_minute_format(date):
     if date:
         return date.strftime("%H:%M")
     return ""
+
+@register.filter
+def check_attend_to_event(event, user):
+    if event.attendees.filter(user=user).exists():
+        return True
+    return False

@@ -28,15 +28,6 @@ class Event(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-
-    def save(self, *args, **kwargs):
-        now = timezone.now()
-        if not self.pk:  # New object being created
-            self.created_at = now
-            self.updated_at = now  # Set both to exactly the same value
-        else:  # Existing object being updated
-            self.updated_at = now
-        super().save(*args, **kwargs)
         
     def __str__(self):
         return self.title or f"Event {self.id}"

@@ -40,5 +40,9 @@ class Attendee(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=ATTENDEE_STATUS, default=REGISTERED_ATTENDEE)
 
+    class Meta:
+        unique_together = ['user', 'event']  # Prevent duplicated registration
+        
     def __str__(self):
         return f"{self.user.username} - {self.event.title}"
+    
