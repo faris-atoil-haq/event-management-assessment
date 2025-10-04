@@ -10,7 +10,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', landing_page, name='landing_page'),
     path('app/', include('app.urls')),
-    path('api/v1/', include('app.api.urls')),  # API URLs
+    path('api/', include('app.api.urls')),  # API URLs
 ]
 
 # Error handlers
