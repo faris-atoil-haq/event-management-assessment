@@ -102,7 +102,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 ROOT_URLCONF = "event_management.urls"
-PARENT_HOST = 'localhost:8000'
+PARENT_HOST = env('PARENT_HOST', default='localhost:8000')
 LOGIN_URL = "/app/login/"
 LOGIN_REDIRECT_URL = "/app/login/"
 
