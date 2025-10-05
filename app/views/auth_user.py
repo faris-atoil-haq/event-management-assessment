@@ -138,6 +138,7 @@ def signup(request):
         else:
             send_email('Account available', email, f'Hello,\n\nYou already have an account on our platform. Please log in with your email and password.\nIf you forgot your password, please reset it.')
             return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'signup'})
+        return render(request, 'core/confirm.html')
     email = request.GET.get('email', None)
     return render(request, 'app/templates/signup.html', {'email': email})
 
