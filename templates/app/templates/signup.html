@@ -120,6 +120,7 @@
         const submit_btn = document.querySelector('.sign-up-button');
         const confirm_password = document.getElementById('confirm_password');
         var alert = document.getElementById("alert")
+        alert.classList.add('hidden')
         if (password.value !== confirm_password.value) {
             alert.classList.remove('hidden')
             password.classList.add('outline')
