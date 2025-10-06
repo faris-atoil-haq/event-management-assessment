@@ -51,20 +51,6 @@ class MyEventsView(generics.ListAPIView):
 
 
 @api_view(['GET'])
-def SendEmailView(request, email=None):
-    if email:
-        res = send_mail('Test Email from Event Management System',
-                        'This is a test email sent from the Event Management System API.',
-                        settings.EMAIL_HOST_USER, [email],
-                        True)
-        if res:
-            return Response({"message": "Email sent successfully."})
-        else:
-            return Response({"message": "Failed to send email."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    return Response({"message": "No email provided."}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_profile(request):
     serializer = UserSerializer(request.user)

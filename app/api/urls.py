@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from app.api.views import (EventListView, MyEventsView, CustomTokenRefreshView,
-                           CustomTokenObtainPairView, EventDetailView, SendEmailView,
+                           CustomTokenObtainPairView, EventDetailView,
                            register_to_event, user_profile)
 from app.api.documentation import api_documentation_view, api_documentation_json
 
@@ -26,6 +26,4 @@ urlpatterns = [
     path('events/<int:event_id>/register/',
          register_to_event, name='register_event'),
     path('my-events/', MyEventsView.as_view(), name='my_events'),
-    path('send-email/<str:email>/', SendEmailView, name='send_email'),
-    
 ]
