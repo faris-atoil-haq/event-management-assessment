@@ -47,7 +47,7 @@ def login_auth(request):
 
 def confirm(request):
     verif_code = request.GET.get('code')
-    email = request.GET.get('email')
+    email = request.GET.get('email').replace(' ', '+')
 
     user = User.objects.filter(email=email).first()
     if user:
