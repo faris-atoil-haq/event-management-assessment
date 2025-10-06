@@ -121,6 +121,7 @@
         const confirm_password = document.getElementById('confirm_password');
         var alert = document.getElementById("alert")
         alert.classList.add('hidden')
+
         if (password.value !== confirm_password.value) {
             alert.classList.remove('hidden')
             password.classList.add('outline')
@@ -131,6 +132,15 @@
             confirm_password.classList.add('ring-red-500')
             confirm_password.classList.add('outline-red-500')
             return false;
+        }
+        else{
+            password.classList.remove('outline')
+            password.classList.remove('ring-red-500')
+            password.classList.remove('outline-red-500')
+
+            confirm_password.classList.remove('outline')
+            confirm_password.classList.remove('ring-red-500')
+            confirm_password.classList.remove('outline-red-500')
         }
         loading_btn.classList.remove('hidden');
         submit_btn.classList.add('hidden');
