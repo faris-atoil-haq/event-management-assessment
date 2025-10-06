@@ -130,13 +130,16 @@ def signup(request):
             verification.code = verif_code
             verification.save()
 
-            send_email('Account Verification', email,
+            res = send_email('Account Verification', email,
                        f'Welcome!\n\nClick the following verification link to activate your account: \n{confirm_signup_link}?code={verif_code}&email={email}')
+            print("Send Email result: ", res)
         elif not verification.verified:
-            send_email('Account Verification', email,
+            res = send_email('Account Verification', email,
                        f'Welcome!\n\nClick the following verification link to activate your account: \n{confirm_signup_link}?code={verification.code}&email={email}')
+            print("Send Email result: ", res)
         else:
-            send_email('Account available', email, f'Hello,\n\nYou already have an account on our platform. Please log in with your email and password.\nIf you forgot your password, please reset it.')
+            res = send_email('Account available', email, f'Hello,\n\nYou already have an account on our platform. Please log in with your email and password.\nIf you forgot your password, please reset it.')
+            print("Send Email result: ", res)
             return render(request, 'app/templates/confirm.html', {'verified': True, 'option': 'signup'})
         return render(request, 'app/templates/confirm.html', {'email': email})
     email = request.GET.get('email', None)
@@ -160,8 +163,9 @@ def reset_password_email(request):
                 else:
                     reset_password_link = 'http://' + reset_password_link
                 print("Reset Password Link: ", reset_password_link)
-                send_email('Reset Password', email,
+                res = send_email('Reset Password', email,
                            f'Click the following link to reset your password: \n{reset_password_link}')
+                print("Send Email result: ", res)
             else:
                 verification_link = settings.PARENT_HOST + \
                     reverse('confirm')+f'?email={email}&code={verif.code}'
@@ -170,8 +174,9 @@ def reset_password_email(request):
                 else:
                     verification_link = 'http://' + verification_link
                 print("Email is not verified. Link: ", verification_link)
-                send_email('Reset Password', email,
+                res = send_email('Reset Password', email,
                            f'Hello,\nYou requested to reset your password, but we noticed that your email has not been verified yet. Please click the following link to verify your email: \n{verification_link}')
+                print("Send Email result: ", res)
         else:
             signup_link = settings.PARENT_HOST + \
                 reverse('signup')+f'?email={email}'
@@ -180,8 +185,9 @@ def reset_password_email(request):
             else:
                 signup_link = 'http://' + signup_link
             print("Email not registered. Link: ", signup_link)
-            send_email('Reset Password', email,
+            res = send_email('Reset Password', email,
                        f'Hello,\nYou requested to reset your password, but we could not find your email. Please register your email here: \n{signup_link}')
+            print("Send Email result: ", res)
         return redirect(reverse('confirm')+'?email='+email)
     return render(request, 'app/templates/reset_password_email.html')
 
