@@ -54,7 +54,7 @@ class MyEventsView(generics.ListAPIView):
 def SendEmailView(request, email=None):
     if email:
         res = send_mail('Test Email from Event Management System',
-                        f'This is a test email sent from the https://event-management-system.vercel.app/ with Django backend.',
+                        f'This is a test email sent from the https://event-management-assessment.vercel.app/ with Django backend.',
                         settings.EMAIL_HOST_USER, [email],
                         True)
         if res:

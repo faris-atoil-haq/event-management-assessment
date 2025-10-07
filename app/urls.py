@@ -75,7 +75,7 @@ urlpatterns = [
          attendee_list, name='attendee_list'),
     
     # Documentation
-    path('documentation/',
+    path('doc/',
          documentation, name='documentation'),
 ]
 
