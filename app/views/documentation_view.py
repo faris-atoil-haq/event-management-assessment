@@ -11,6 +11,10 @@ def documentation(request):
 
 Welcome to the comprehensive guide for our Event Management System! This documentation covers the complete workflow from event creation to attendee registration and management.
 
+<div style="text-align: center; margin: 20px 0;">
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NI8cl1AqnlQ?si=oIciO5weTsKl_v0A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## 🎯 System Overview
 
 The Event Management System is designed to streamline the entire process of organizing, managing, and attending events. Whether you're an event organizer or an attendee, this guide will walk you through every feature.

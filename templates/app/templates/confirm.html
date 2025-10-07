@@ -17,16 +17,16 @@
         {% elif verified and option == 'reseted'%}
             Password has been successfully reset
             
-            <div class="text-sm font-medium text-gray-500">
-                <a href="{% url 'login' %}"class="text-primary-700 hover:underline">Login here</a>
+            <div class="text-sm font-medium text-primary-500">
+                <a href="{% url 'login' %}"class="font-medium text-primary-700 hover:underline">Login here</a>
             </div>
         {% else %}
             <p>The email has been sent to your email</p>
             <span class="font-medium hover:underline">({{email}}).</span>
             <p>Please check your email.</p>
             
-            <div class="text-sm font-medium text-gray-500">
-                <a href="{% url 'login' %}"class="text-primary-700 hover:underline">Login here</a>
+            <div class="text-sm font-medium text-primary-500">
+                <a href="{% url 'landing_page' %}"class="font-medium text-primary-700 hover:underline">Back</a>
             </div>
         {% endif %}
     </div>
